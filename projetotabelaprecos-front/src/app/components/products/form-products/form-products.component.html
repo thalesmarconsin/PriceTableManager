@@ -1,0 +1,65 @@
+<div class="container">
+  <mat-card>
+    <mat-toolbar id="toolbar">
+      <span>{{ titulo }}</span>
+    </mat-toolbar>
+    <br />
+
+    <form [formGroup]="form" class="form-container">
+      <ng-container *ngIf="id && id > 0">
+        <div class="row">
+          <div class="col-md-12">
+            <mat-form-field appearance="outline" class="input-nome">
+              <mat-label>ID</mat-label>
+              <input matInput formControlName="id"/>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field appearance="outline" class="input-nome">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome" required />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field appearance="outline" class="input-nome">
+            <mat-label>Preço</mat-label>
+            <input
+              matInput
+              formControlName="preco"
+              required
+              mask="separator.2"
+              thousandSeparator="."
+              decimalMarker=","
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field appearance="outline" class="input-nome">
+            <mat-label>Categoria</mat-label>
+            <mat-select formControlName="categoria_id" required>
+              <mat-option *ngFor="let cat of categorias" [value]="cat.id">
+                {{ cat.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button class="button" (click)="salvarForm()" 
+          [disabled]="!form.dirty || form.invalid || form.pending">Cadastrar</button>
+        <button class="buttoncancel" (click)="redirecionarGrade()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

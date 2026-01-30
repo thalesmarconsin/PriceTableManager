@@ -1,0 +1,21 @@
+<div class="container">
+  <mat-card>
+    <mat-toolbar id="toolbar">
+      <span>{{ titulo }}</span>
+    </mat-toolbar>
+
+    <form [formGroup]="form" class="form-container mt-3">
+      <mat-form-field appearance="outline" class="input-nome">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome" />
+      </mat-form-field>
+\
+      <div class="text-center mt-3">
+        <button class="button" (click)="salvarForm()" [disabled]="form.invalid">
+          Atualizar
+        </button>
+        <button class="buttoncancel" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

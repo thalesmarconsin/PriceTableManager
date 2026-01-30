@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.container {
+    padding: 20px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .full-width-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .filter {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .text-end {
+    text-align: end;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .mb-3 {
+    margin-bottom: 1rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 2rem;
+  }
+  
+  .mt-3 {
+    margin-top: 1rem;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  

@@ -1,0 +1,60 @@
+<div class="container">
+    <mat-toolbar id="toolbar" class="mb-4">
+      <span>Gerenciamento de Produtos</span>
+      <span class="spacer"></span>
+      <div class="d-flex gap-2">
+        <button class="button" (click)="createProduto()">Criar Produto +</button>
+        <button class="button button-voltar" (click)="voltar()">
+          <mat-icon class="voltar-icon">arrow_back</mat-icon>
+          <span class="voltar-text">Voltar</span>
+        </button>
+      </div>
+    </mat-toolbar>
+  
+    <mat-card>
+      <mat-form-field appearance="fill" class="full-width mb-3">
+        <mat-label>Filtrar</mat-label>
+        <input matInput (keyup)="filtrarGrid($event)" placeholder="Insira os dados para filtrar" #input />
+      </mat-form-field>
+  
+      <table mat-table [dataSource]="dataSourceP" matSort class="mat-elevation-z8 full-width-table">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let produtos">{{ produtos.id }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+          <td mat-cell *matCellDef="let produtos">{{ produtos.nome }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="preco">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Preço</th>
+            <td mat-cell *matCellDef="let produtos">R${{ produtos.preco }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="categoria">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoria</th>
+            <td mat-cell *matCellDef="let produtos">{{ produtos.category?.nome }}</td>
+          </ng-container>
+  
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef>Ações</th>
+          <td mat-cell *matCellDef="let produtos">
+            <button mat-icon-button color="primary" (click)="editProduto(produtos.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteProduto(produtos.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="colunasAMostrar"></tr>
+        <tr mat-row *matRowDef="let row; columns: colunasAMostrar"></tr>
+      </table>
+  
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Selecione a página"></mat-paginator>
+    </mat-card>
+  </div>
+  
