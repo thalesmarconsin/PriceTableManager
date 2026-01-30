@@ -1,0 +1,19 @@
+# ===== Frontend (Angular / Node) =====
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== Backend (Laravel / PHP) =====
+vendor/
+.env
+storage/logs/
+storage/framework/
+bootstrap/cache/
+
+# ===== Geral =====
+.DS_Store
+.idea/
+.vscode/

@@ -31,7 +31,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
-            'categoria_id' => 'required|exists:categories,id'
+            'categoria_id' => 'required|exists:categorias,id'
         ]);
 
         return Product::create($validated);
@@ -58,7 +58,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'nome' => 'sometimes|string|max:255',
             'preco' => 'sometimes|numeric|min:0',
-            'categoria_id' => 'sometimes|exists:categories,id'
+            'categoria_id' => 'sometimes|exists:categorias,id'
         ]);
 
         $product->update($validated);
