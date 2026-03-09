@@ -6,16 +6,16 @@ O sistema foi desenvolvido utilizando Laravel no backend, responsável pela cria
 
 Entre as funcionalidades implementadas estão:
 
-Cadastro de novos produtos
+- Cadastro de novos produtos
 
-Listagem de produtos cadastrados
+- Listagem de produtos cadastrados
 
-Edição de informações de produtos
+- Edição de informações de produtos
 
-Exclusão de produtos
+- Exclusão de produtos
 
-Associação de produtos a categorias
+- Associação de produtos a categorias
 
-Consumo de API REST entre Angular e Laravel
+- Consumo de API REST entre Angular e Laravel
 
 O objetivo do projeto é demonstrar boas práticas de desenvolvimento, organização de código, integração entre frontend e backend e conhecimento em arquitetura básica de aplicações web, requisitos fundamentais para um desenvolvedor em início de carreira.
