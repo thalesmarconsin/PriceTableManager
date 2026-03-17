@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
+use App\Models\Stock;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::with('category', 'stock');
 
         if ($request->has('categoria_id')) {
             $query->where('categoria_id', $request->category_id);
@@ -34,12 +35,20 @@ class ProductController extends Controller
             'categoria_id' => 'required|exists:categorias,id'
         ]);
 
-        return Product::create($validated);
+        $product = Product::create($validated);
+
+        Stock::create([
+            'produto_id' => $product->id,
+            'quantidade' => 0,
+            'quantidade_minima' => 0
+        ]);
+
+        return $product->load(['category', 'stock']);
     }
 
     public function show($id)
     {
-        $product = Product::with('category')->find($id);
+        $product = Product::with('category', 'stock')->find($id);
 
         if (!$product) {
             return response()->json([
@@ -62,7 +71,8 @@ class ProductController extends Controller
         ]);
 
         $product->update($validated);
-        return $product;
+
+        return $product->load(['category', 'stock']);
     }
 
     public function destroy($id)

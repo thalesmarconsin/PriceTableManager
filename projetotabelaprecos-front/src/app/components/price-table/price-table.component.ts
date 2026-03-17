@@ -127,4 +127,8 @@ export class PriceTableComponent implements OnInit {
   redirecionarGridP() {
     this.router.navigate(['/products']);
   }
+
+  redirecionarGridS() {
+    this.router.navigate(['/stock']);
+  }
 }

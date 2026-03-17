@@ -1,0 +1,56 @@
+<div class="container">
+  <mat-toolbar id="toolbar" class="mb-4">
+    <span>Movimentação de Estoque</span>
+    <span class="spacer"></span>
+    <div class="d-flex gap-2">
+      <button class="button button-voltar" (click)="voltar()">
+        <mat-icon class="voltar-icon">arrow_back</mat-icon>
+        <span class="voltar-text">Voltar</span>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <mat-card>
+    <form [formGroup]="form" (ngSubmit)="salvar()" class="form-grid">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>ID do Produto</mat-label>
+        <input matInput formControlName="produto_id" type="number" readonly />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Tipo de Movimentação</mat-label>
+        <mat-select formControlName="tipo_movimentacao">
+          <mat-option value="entrada">Entrada</mat-option>
+          <mat-option value="saida">Saída</mat-option>
+          <mat-option value="ajuste">Ajuste</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Quantidade</mat-label>
+        <input matInput type="number" formControlName="quantidade" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Motivo</mat-label>
+        <input matInput formControlName="motivo" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Observação</mat-label>
+        <textarea matInput rows="4" formControlName="observacao"></textarea>
+      </mat-form-field>
+
+      <div class="messages" *ngIf="mensagem || erro">
+        <p class="success" *ngIf="mensagem">{{ mensagem }}</p>
+        <p class="error" *ngIf="erro">{{ erro }}</p>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="button" [disabled]="carregando">
+          {{ carregando ? 'Salvando...' : 'Salvar Movimentação' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

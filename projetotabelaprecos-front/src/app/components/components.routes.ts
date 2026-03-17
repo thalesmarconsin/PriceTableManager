@@ -7,6 +7,9 @@ import { HomeComponent } from './home/home.component';
 import { EditCategoriesComponent } from './categories/edit-categories/edit-categories.component';
 import { GridProductsComponent } from './products/grid-products/grid-products.component';
 import { EditProductsComponent } from './products/edit-products/edit-products.component';
+import { GridStockComponent } from './stock/grid-stock/grid-stock.component';
+import { StockHistoryComponent } from './stock/history-stock/history-stock.component';
+import { StockMovementComponent } from './stock/movement-stock/movement-stock.component';
 
 export const COMPONENTS_ROUTE: Routes = [
   { path: '', component: HomeComponent },
@@ -20,4 +23,8 @@ export const COMPONENTS_ROUTE: Routes = [
   { path: 'products', component: GridProductsComponent },
   { path: 'products/productsForm', component: FormProductsComponent },
   { path: 'products/editProducts/:id', component: EditProductsComponent },
+
+  { path: 'stock', component: GridStockComponent},
+  { path: 'stock/move', component: StockMovementComponent },
+  { path: 'stock/history', component: StockHistoryComponent },
 ];
