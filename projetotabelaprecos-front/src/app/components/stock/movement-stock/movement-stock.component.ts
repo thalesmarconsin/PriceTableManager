@@ -70,18 +70,23 @@ export class StockMovementComponent implements OnInit {
     this.mensagem = '';
 
     const payload: StockMovementPayload = this.form.value;
+    console.log('Payload enviado', payload)
 
     this.stockService.createMovement(payload).subscribe({
-      next: () => {
+      next: (res) => {
         this.mensagem = 'Movimentação registrada com sucesso.';
         this.carregando = false;
         setTimeout(() => {
           this.router.navigate(['/stock']);
         }, 800);
+        console.log('Sucesso', res)
       },
       error: (err) => {
         this.erro = err?.error?.mensagem || 'Erro ao registrar movimentação.';
         this.carregando = false;
+        console.error('Falha completa:', err);
+        console.error('Status:', err.status);
+        console.error('Resposta backend:', err.error);
       }
     });
   }

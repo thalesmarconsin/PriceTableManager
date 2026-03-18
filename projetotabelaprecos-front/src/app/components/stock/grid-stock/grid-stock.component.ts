@@ -37,7 +37,6 @@ export class GridStockComponent implements OnInit, AfterViewInit {
     'categoria',
     'preco',
     'quantidade',
-    'quantidade_minima',
     'status',
     'acoes'
   ];
@@ -90,7 +89,7 @@ export class GridStockComponent implements OnInit, AfterViewInit {
       case 'estoque_baixo':
         return 'Estoque baixo';
       default:
-        return 'Estoque OK';
+        return 'Possui estoque';
     }
   }
 
@@ -112,6 +111,6 @@ export class GridStockComponent implements OnInit, AfterViewInit {
   }
 
   voltar(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/table']);
   }
 }
