@@ -10,9 +10,12 @@ import { EditProductsComponent } from './products/edit-products/edit-products.co
 import { GridStockComponent } from './stock/grid-stock/grid-stock.component';
 import { StockHistoryComponent } from './stock/history-stock/history-stock.component';
 import { StockMovementComponent } from './stock/movement-stock/movement-stock.component';
+import { SimplexComponent } from './simplex/simplex.component';
 
 export const COMPONENTS_ROUTE: Routes = [
   { path: '', component: HomeComponent },
+
+  { path: 'simplex', component: SimplexComponent },
 
   { path: 'table', component: PriceTableComponent },
 

@@ -6,7 +6,10 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\StockMovementController;
+use App\Http\Controllers\Api\SimplexController;
 
+// simplex
+Route::post('/simplex', [SimplexController::class, 'calcular']);
 
 //categorias
 Route::get('/categories', [CategoryController::class, 'index']);

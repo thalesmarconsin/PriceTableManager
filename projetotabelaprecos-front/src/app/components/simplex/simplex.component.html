@@ -1,0 +1,191 @@
+<div class="container">
+
+  <mat-toolbar id="toolbar" class="mb-4">
+    <span>Otimização pelo Método Simplex</span>
+    <span class="spacer"></span>
+    <div class="d-flex gap-2">
+      <button class="button button-voltar" (click)="voltarHome()">
+        <mat-icon class="voltar-icon">arrow_back</mat-icon>
+        <span class="voltar-text">Voltar</span>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- CARREGANDO PRODUTOS -->
+  <div class="loading-box" *ngIf="carregandoProdutos">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Carregando produtos cadastrados...</p>
+  </div>
+
+  <div *ngIf="!carregandoProdutos">
+
+    <!-- PRODUTOS -->
+    <mat-card class="mb-4">
+      <mat-card-header>
+        <mat-card-title class="card-titulo">
+          <mat-icon class="icon-titulo">inventory_2</mat-icon>
+          Produtos para Otimização
+        </mat-card-title>
+        <mat-card-subtitle>Selecione os produtos e ajuste o lucro e custo por unidade</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div class="sem-produtos" *ngIf="produtosSimplex.length === 0">
+          <mat-icon color="warn">warning</mat-icon>
+          <span>Nenhum produto cadastrado.</span>
+          <button class="button btn-link" (click)="irParaProdutos()">Cadastrar produtos</button>
+        </div>
+
+        <div class="tabela-wrapper" *ngIf="produtosSimplex.length > 0">
+          <table class="tabela-produtos mat-elevation-z2">
+            <thead>
+              <tr>
+                <th>Incluir</th>
+                <th>Produto</th>
+                <th>Lucro / unidade (R$)</th>
+                <th>Custo / unidade (R$)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of produtosSimplex; let i = index" [class.linha-inativa]="!p.ativo">
+                <td class="col-check">
+                  <mat-checkbox [(ngModel)]="p.ativo" color="primary"></mat-checkbox>
+                </td>
+                <td class="col-nome">
+                  <span class="dot-cor" [style.background-color]="getCorProduto(i)"></span>
+                  {{ p.nome }}
+                </td>
+                <td class="col-valor">
+                  <mat-form-field appearance="outline" class="input-valor">
+                    <input matInput type="number" [(ngModel)]="p.lucro" min="0" step="0.01" />
+                  </mat-form-field>
+                </td>
+                <td class="col-valor">
+                  <mat-form-field appearance="outline" class="input-valor">
+                    <input matInput type="number" [(ngModel)]="p.custo" min="0" step="0.01" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+    <!-- RESTRIÇÕES -->
+    <mat-card class="mb-4" *ngIf="produtosSimplex.length > 0">
+      <mat-card-header>
+        <mat-card-title class="card-titulo">
+          <mat-icon class="icon-titulo">tune</mat-icon>
+          Restrições do Problema
+        </mat-card-title>
+        <mat-card-subtitle>
+          Maximizar Z = Σ (lucro × quantidade) sujeito às restrições abaixo
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="restricoes-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Quantidade máxima total</mat-label>
+            <input matInput type="number" [(ngModel)]="maxQuantidade" min="1" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Orçamento máximo (R$)</mat-label>
+            <input matInput type="number" [(ngModel)]="orcamento" min="0" />
+            <mat-hint>0 = sem restrição de orçamento</mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="acoes">
+        <button class="button" (click)="calcular()" [disabled]="carregando || produtosAtivos.length === 0">
+          <mat-icon>calculate</mat-icon>
+          {{ carregando ? 'Calculando...' : 'Calcular Simplex' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- CALCULANDO -->
+    <div class="loading-box" *ngIf="carregando">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Executando o método Simplex...</p>
+    </div>
+
+    <!-- ERRO -->
+    <mat-card class="card-erro" *ngIf="erro && !carregando">
+      <mat-icon color="warn">error_outline</mat-icon>
+      <span>{{ erro }}</span>
+    </mat-card>
+
+    <!-- RESULTADO -->
+    <div *ngIf="resultado">
+
+      <mat-card class="card-resultado mb-4">
+        <mat-card-header>
+          <mat-card-title class="card-titulo">
+            <mat-icon class="icon-sucesso">emoji_events</mat-icon>
+            Resultado Ótimo Encontrado
+          </mat-card-title>
+          <mat-card-subtitle>Status: {{ resultado.status }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="lucro-destaque">
+            <span class="lucro-label">Lucro Máximo</span>
+            <span class="lucro-valor">R$ {{ resultado.lucro_maximo | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="resumo-grid">
+            <div class="resumo-item">
+              <mat-icon>inventory_2</mat-icon>
+              <span class="resumo-label">Quantidade utilizada</span>
+              <span class="resumo-valor">{{ resultado.quantidade_utilizada | number:'1.0-0' }} / {{ maxQuantidade }}</span>
+            </div>
+            <div class="resumo-item" *ngIf="orcamento > 0">
+              <mat-icon>attach_money</mat-icon>
+              <span class="resumo-label">Orçamento utilizado</span>
+              <span class="resumo-valor">
+                R$ {{ resultado.orcamento_utilizado | number:'1.2-2' }} / R$ {{ orcamento | number:'1.2-2' }}
+              </span>
+            </div>
+            <div class="resumo-item">
+              <mat-icon>loop</mat-icon>
+              <span class="resumo-label">Iterações</span>
+              <span class="resumo-valor">{{ resultado.iteracoes }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="mb-4">
+        <mat-card-header>
+          <mat-card-title class="card-titulo">
+            <mat-icon class="icon-titulo">bar_chart</mat-icon>
+            Alocação Ótima por Produto
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="solucao-lista">
+            <div class="solucao-item" *ngFor="let s of resultado.solucao; let i = index"
+                 [style.border-left-color]="getCorProduto(i)">
+              <div class="sol-topo">
+                <span class="sol-nome">{{ s.nome }}</span>
+                <span class="sol-quantidade" [class.sol-zero]="s.quantidade === 0">
+                  {{ s.quantidade | number:'1.0-0' }} unid.
+                </span>
+              </div>
+              <div class="barra-externa">
+                <div class="barra-interna"
+                     [style.width.%]="maxQuantidade > 0 ? (s.quantidade / maxQuantidade) * 100 : 0"
+                     [style.background-color]="getCorProduto(i)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+  </div>
+</div>

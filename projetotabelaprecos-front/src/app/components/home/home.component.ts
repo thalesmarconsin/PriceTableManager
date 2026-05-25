@@ -13,6 +13,10 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   irParaTabela() {
-    this.router.navigate(['/table']); 
+    this.router.navigate(['/table']);
+  }
+
+  irParaSimplex() {
+    this.router.navigate(['/simplex']);
   }
 }
